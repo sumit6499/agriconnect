@@ -243,7 +243,7 @@ export default function SignupPage() {
         <CardFooter className="flex justify-center">
           <p className="text-sm text-muted-foreground">
             आधीपासून खाते आहे?{" "}
-            <a href="/login" className="text-primary hover:underline">
+            <a href="/mrt/login" className="text-primary hover:underline">
               लॉगिन करा
             </a>
           </p>

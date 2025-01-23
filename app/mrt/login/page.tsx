@@ -74,7 +74,7 @@ export default function LoginPage() {
         title:"User Logged In successfully",
         variant:"default"
       })
-      router.push("/dashboard")
+      router.push("/mrt/dashboard")
     } catch (error) {
       console.log(error)
       if(error instanceof AxiosError){
@@ -149,7 +149,7 @@ export default function LoginPage() {
                     <FormControl>
                       <div className="relative">
                         <Mail className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input placeholder="Enter your email" className="pl-8" {...field} />
+                        <Input placeholder="तुमचा ईमेल प्रविष्ट करा" className="pl-8" {...field} />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -165,7 +165,7 @@ export default function LoginPage() {
                     <FormControl>
                       <div className="relative">
                         <Lock className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input type="password" placeholder="Enter your password" className="pl-8" {...field} />
+                        <Input type="password" placeholder="तुमचा पासवर्ड प्रविष्ट करा" className="pl-8" {...field} />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -182,7 +182,7 @@ export default function LoginPage() {
                       <FormControl>
                         <div className="relative">
                           <IdCard className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                          <Input placeholder="Enter your 12-digit PMKISAN ID" className="pl-8" {...field} />
+                          <Input placeholder="तुमचा १२-अंकी पीएमकिसान आयडी प्रविष्ट करा." className="pl-8" {...field} />
                         </div>
                       </FormControl>
                       <FormDescription>शेतकरी खात्यांसाठी आवश्यक</FormDescription>
@@ -200,7 +200,7 @@ export default function LoginPage() {
         <CardFooter className="flex justify-center">
           <p className="text-sm text-muted-foreground">
           तुमचे खाते नाही का?{" "}
-            <a href="/signup" className="text-primary hover:underline">
+            <a href="/mrt/signup" className="text-primary hover:underline">
             साइन अप करा
             </a>
           </p>
