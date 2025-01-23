@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Popup,Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
 import { useEffect, useState } from "react";
@@ -48,6 +48,7 @@ export function MapView() {
             <Marker
               key={location.id}
               position={location.position as [number, number]}
+              icon={new Icon({iconUrl:'./marker.png',iconSize:[35, 41], iconAnchor: [12, 41]})}
             >
               <Popup>
                 <div className="p-2">

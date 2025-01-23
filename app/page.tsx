@@ -23,7 +23,7 @@ export default function Home() {
                 <ShoppingBasket className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/auth/register">
+            <Link href="/signup">
               <Button variant="outline" size="lg">
                 Join as Farmer
                 <Leaf className="ml-2 h-5 w-5" />

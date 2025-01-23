@@ -8,7 +8,7 @@ import Navbar from "@/components/navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AgriBridge - Connecting Farmers & Consumers",
+  title: "AgriConnect - Connecting Farmers & Consumers",
   description: "A marketplace platform connecting farmers directly with consumers and retailers",
 };
 

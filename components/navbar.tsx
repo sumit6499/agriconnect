@@ -11,8 +11,28 @@ import {
 import { ModeToggle } from "./mode-toggle";
 import Link from "next/link";
 import { Leaf } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const [user,setUser]=useState<string|null>()
+  const {toast}=useToast()
+  const router=useRouter()
+
+  useEffect(()=>{
+    setUser(localStorage.getItem("user"))
+  },[])
+
+  const handleLogout=()=>{
+    localStorage.removeItem("user")
+    toast({
+      title:"User Logout successfully"
+    })
+    setUser(null)
+    router.push('/login')
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
@@ -48,13 +68,23 @@ export default function Navbar() {
           </NavigationMenu>
         </div>
         <div className="ml-auto flex items-center space-x-4">
-          <ModeToggle />
-          <Button variant="outline" asChild>
-            <Link href="/auth/login">Login</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/auth/register">Register</Link>
-          </Button>
+          <ModeToggle />{
+            !user?(
+              <>
+              <Button variant="outline" asChild>
+                <Link href="/login">Login</Link>
+              </Button>
+              <Button asChild>
+                <Link href="/signup">Register</Link>
+              </Button>
+              </>
+            ):(
+              <Button variant="outline" onClick={handleLogout}>
+                Logout
+              </Button>
+            )
+          }
+          
         </div>
       </div>
     </header>
