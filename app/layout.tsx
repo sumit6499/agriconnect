@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/navbar";
+import {appWithTranslation} from 'next-i18next'
 
 const inter = Inter({ subsets: ["latin"] });
 

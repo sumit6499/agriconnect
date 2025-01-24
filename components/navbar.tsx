@@ -14,6 +14,7 @@ import { Leaf } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import {deleteCookie,getCookies} from 'cookies-next'
 
 export default function Navbar() {
   const [user,setUser]=useState<string|null>()
@@ -30,6 +31,9 @@ export default function Navbar() {
       title:"User Logout successfully"
     })
     setUser(null)
+    const cookies=getCookies()
+    console.log(cookies)
+    deleteCookie("isAuthenticated",{path:'/'})
     router.push('/login')
   }
 

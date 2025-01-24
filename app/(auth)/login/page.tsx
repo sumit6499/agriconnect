@@ -70,6 +70,7 @@ export default function LoginPage() {
         }
       })
       localStorage.setItem("user",JSON.stringify(res.data.data))
+      
       toast({
         title:"User Logged In successfully",
         variant:"default"

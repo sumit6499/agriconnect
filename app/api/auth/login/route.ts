@@ -8,7 +8,6 @@ import bcrypt from 'bcryptjs'
 
 
 
-
 export async function GET(req:NextRequest) {
     return new Response(JSON.stringify({
         msg:"Hello from server"
@@ -44,12 +43,13 @@ export async function POST(req:NextRequest) {
             throw new CustomError('PMKISAN ID is not verified',HTTP_CODE.UNAUTHORIZED)
         }
 
+
         return new Response(JSON.stringify({
             msg:"Customer logged in success",
             data:user
         }),{
             status:HTTP_CODE.OK,
-            headers:{"Content-Type":"application/json"}
+            headers:{"Content-Type":"application/json","Set-Cookie":`isAuthenticated=${true}; path=/; maxAge=60*60*24`}
         })
     }
     catch (error) {
