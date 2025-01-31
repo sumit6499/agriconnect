@@ -17,8 +17,11 @@ jobs:
               with:
                 node-version: 23
             
+            - name: install pnpm
+              run: npm i pnpm
+
             - name: install dependecies
-              run: npm ci
+              run: pnpm install
             
             - name: Testing Next.js code
               run: npm test
