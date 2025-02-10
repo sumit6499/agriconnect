@@ -3,24 +3,24 @@
 import { Card } from "@/components/ui/card";
 import { MapContainer, TileLayer, Popup,Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { Icon } from "leaflet";
+import {Icon} from 'leaflet'
 import { useEffect, useState } from "react";
-import { location } from "@/types/types";
+import { location } from "@/types";
 import axios from "axios";
 
 
 export function MapView() {
   const [mounted, setMounted] = useState(false);
-  const [locations,setLocations]=useState<location[]|null>()
+  const [locations,setLocations]=useState<location[]>([])
 
   useEffect(() => {
     setMounted(true);
     const fetchLocations = async () => {
       try {
         const response = await axios.get<location[]>("/api/locations");
-        //@ts-ignore
+        //@ts-expect-error: response data available
         if(response.data.data)
-          //@ts-ignore
+           //@ts-expect-error: response data available
           setLocations(response.data.data)
       } catch (error) {
         console.error("Error fetching locations:", error);

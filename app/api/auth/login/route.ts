@@ -6,9 +6,7 @@ import { User } from "@/services/user.service";
 import { CustomError } from "@/services/error.service";
 import bcrypt from 'bcryptjs'
 
-
-
-export async function GET(req:NextRequest) {
+export async function GET() {
     return new Response(JSON.stringify({
         msg:"Hello from server"
     }),{

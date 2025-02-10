@@ -56,14 +56,14 @@ export class Farmer extends User{
 }
 
 export class Customer extends User{
-    public async getCustomer(name:string){
+    public async getCustomer(){
         return await db.user.findFirst({
             where:{
                 role:'CUSTOMER'
             }
         })
     }
-    public async getAllCustomers(name:string){
+    public async getAllCustomers(){
         return await db.user.findMany({
             where:{
                 role:'CUSTOMER'

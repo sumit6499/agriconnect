@@ -13,6 +13,6 @@ services:
     image: redis:7.4.1-alpine
     ports:
       - 6379:6379
-  pgadmin:
+  
     
 

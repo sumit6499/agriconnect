@@ -1,19 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import Home from '@/app/page'; 
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Leaf, ShoppingBasket, TrendingUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props: any) => <img {...props} />,
+  default: (props: any) => <Image {...props} />,
 }));
 
 jest.mock('next/link', () => ({
   __esModule: true,
-  default: (props: any) => <a {...props}>{props.children}</a>,
+  default: (props: any) => <Link {...props}>{props.children}</Link>,
 }));
 
 describe('Home Component', () => {

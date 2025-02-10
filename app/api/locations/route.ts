@@ -1,10 +1,8 @@
 import { db } from '@/lib/db.config'
-import { location } from '@/types/types'
 import { HTTP_CODE } from '@/utils/http-code'
 import { PrismaClientInitializationError} from '@prisma/client/runtime/library'
-import {NextRequest} from 'next/server'
 
-export async function GET(req:NextRequest) {
+export async function GET() {
     try {
         const locations=await db.location.findMany({
             relationLoadStrategy:'join',
