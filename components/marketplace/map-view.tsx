@@ -1,17 +1,16 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { MapContainer, TileLayer, Popup,Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Popup, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import {Icon} from 'leaflet'
+import { Icon } from "leaflet";
 import { useEffect, useState } from "react";
 import { location } from "@/types";
 import axios from "axios";
 
-
 export function MapView() {
   const [mounted, setMounted] = useState(false);
-  const [locations,setLocations]=useState<location[]>([])
+  const [locations, setLocations] = useState<location[]>([]);
 
   useEffect(() => {
     setMounted(true);
@@ -19,9 +18,9 @@ export function MapView() {
       try {
         const response = await axios.get<location[]>("/api/locations");
         //@ts-expect-error: response data available
-        if(response.data.data)
-           //@ts-expect-error: response data available
-          setLocations(response.data.data)
+        if (response.data.data)
+          //@ts-expect-error: response data available
+          setLocations(response.data.data);
       } catch (error) {
         console.error("Error fetching locations:", error);
       }
@@ -36,8 +35,8 @@ export function MapView() {
     <Card className="mt-6">
       <div className="h-[600px] w-full">
         <MapContainer
-          center={[12.9716, 77.5946]}
-          zoom={10}
+          center={[18.5204, 73.8567]} // Center at Pune, Maharashtra
+          zoom={7}                   // Zoom suitable for Maharashtra
           style={{ height: "100%", width: "100%" }}
         >
           <TileLayer
@@ -47,14 +46,14 @@ export function MapView() {
           {locations?.map((location) => (
             <Marker
               key={location.id}
-              position={[location.latitude,location.longitude] as [number, number]}
-              icon={new Icon({iconUrl:'./marker.png',iconSize:[35, 41], iconAnchor: [12, 41]})}
+              position={[location.latitude, location.longitude] as [number, number]}
+              icon={new Icon({ iconUrl: "./marker.png", iconSize: [35, 41], iconAnchor: [12, 41] })}
             >
               <Popup>
                 <div className="p-2">
                   <h3 className="font-semibold">{location.address}</h3>
-                  <p className="text-sm">Products: {location.product.name}</p>
-                  <p className="text-sm">Price Range: {location.product.price}</p>
+                  <p className="text-sm">Product: {location.product.name}</p>
+                  <p className="text-sm">Price: ₹{location.product.price}</p>
                 </div>
               </Popup>
             </Marker>
