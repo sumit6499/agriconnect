@@ -1,11 +1,53 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Leaf, ShoppingBasket, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+// Mock price simulation hook
+const initialPrices = [
+  { product: "Organic Tomatoes", basePrice: 30 },
+  { product: "Fresh Wheat", basePrice: 22 },
+  { product: "Green Peas", basePrice: 18 },
+];
+
+function usePriceSimulation() {
+  const [prices, setPrices] = useState(() =>
+    initialPrices.map((item) => ({
+      ...item,
+      currentPrice: item.basePrice,
+      previousPrice: item.basePrice,
+    }))
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPrices((prevPrices) =>
+        prevPrices.map((item) => {
+          const change = Math.floor(Math.random() * 5) - 2; // -2 to +2
+          const newPrice = Math.max(item.currentPrice + change, 1);
+          return {
+            ...item,
+            previousPrice: item.currentPrice,
+            currentPrice: newPrice,
+          };
+        })
+      );
+    }, 2000); 
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return prices;
+}
+
 
 export default function Home() {
+  const simulatedPrices = usePriceSimulation();
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
@@ -77,21 +119,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Market Trends Preview */}
+      {/* Market Trends Section */}
       <section className="mb-16">
         <h2 className="text-3xl font-bold text-center mb-8">Latest Market Trends</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <Card className="p-6">
             <h3 className="text-xl font-semibold mb-4">Top Selling Products</h3>
             <div className="space-y-4">
-              {["Organic Tomatoes", "Fresh Wheat", "Green Peas"].map((item) => (
-                <div key={item} className="flex justify-between items-center">
-                  <span>{item}</span>
-                  <span className="text-green-600">↑ 12%</span>
-                </div>
-              ))}
+              {simulatedPrices.map((item) => {
+                const change =
+                  ((item.currentPrice - item.previousPrice) / item.previousPrice) * 100;
+                const isGain = change >= 0;
+                return (
+                  <div key={item.product} className="flex justify-between items-center">
+                    <span>{item.product}</span>
+                    <span className={isGain ? "text-green-600" : "text-red-600"}>
+                      {isGain ? "↑" : "↓"} {Math.abs(parseFloat(change.toFixed(1)))}%
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </Card>
+
           <Card className="p-6">
             <h3 className="text-xl font-semibold mb-4">Price Forecasts</h3>
             <div className="space-y-4">
