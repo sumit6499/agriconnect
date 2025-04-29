@@ -1,6 +1,7 @@
-"use client";
-
+'use client'
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart, LineChart } from "lucide-react";
 import { PriceChart } from "@/components/dashboard/price-chart";
@@ -9,17 +10,147 @@ import { RecentOrders } from "@/components/dashboard/recent-orders";
 import { ProductInventory } from "@/components/dashboard/product-inventory";
 
 export default function DashboardPage() {
+  const [product, setProduct] = useState("");
+  const [season, setSeason] = useState("");
+  const [predictedPrice, setPredictedPrice] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  interface Product {
+    id: string;
+    name: string;
+  }
+
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("/api/products");
+        const data = await res.json();
+
+        if (res.ok) {
+          setProducts(data.products);
+        } else {
+          setError("Failed to load products.");
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch products.");
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handlePredictPrice = async () => {
+    if (!product || !season) {
+      setError("Please select both product and season.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/predict-price", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product, season }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setPredictedPrice(data.predictedPrice.toFixed(2));
+      } else {
+        setError(data.error || "Prediction failed.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Failed to predict price.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col gap-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
-            Overview of your farming business and market insights
-          </p>
+          <p className="text-muted-foreground">Overview of your farming business</p>
         </div>
 
+        {/* Predict Price Card */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="p-6 col-span-4">
+            <h3 className="text-lg font-medium mb-4">Predict Price</h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handlePredictPrice();
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label htmlFor="product" className="block text-sm font-medium">
+                  Select Product
+                </label>
+                <select
+                  id="product"
+                  value={product}
+                  onChange={(e) => setProduct(e.target.value)}
+                  className="w-full border p-2 mt-2"
+                >
+                  <option value="">Select a product</option>
+                  {products.length > 0 ? (
+                    products.map((prod) => (
+                      <option key={prod.id} value={prod.name}>
+                        {prod.name}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">No products available</option>
+                  )}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="season" className="block text-sm font-medium">
+                  Select Season
+                </label>
+                <select
+                  id="season"
+                  value={season}
+                  onChange={(e) => setSeason(e.target.value)}
+                  className="w-full border p-2 mt-2"
+                >
+                  <option value="">Select a season</option>
+                  <option value="Summer">Summer</option>
+                  <option value="Winter">Winter</option>
+                  <option value="Rainy">Rainy</option>
+                </select>
+              </div>
+
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Predicting..." : "Predict Price"}
+              </Button>
+            </form>
+
+            {predictedPrice && (
+              <div className="mt-4 text-xl font-bold">
+                Predicted Price: ₹{predictedPrice}
+              </div>
+            )}
+            {error && (
+              <div className="mt-4 text-sm text-red-500">
+                {error}
+              </div>
+            )}
+          </Card>
+
+          {/* Other Static Cards */}
           <Card className="p-6">
             <h3 className="text-sm font-medium text-muted-foreground">Total Sales</h3>
             <p className="text-2xl font-bold">₹24,500</p>
@@ -42,6 +173,7 @@ export default function DashboardPage() {
           </Card>
         </div>
 
+        {/* Tabs Section */}
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">
@@ -53,6 +185,7 @@ export default function DashboardPage() {
               Analytics
             </TabsTrigger>
           </TabsList>
+
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
               <Card className="col-span-4">
@@ -68,6 +201,7 @@ export default function DashboardPage() {
                 </div>
               </Card>
             </div>
+
             <div className="grid gap-4 md:grid-cols-2">
               <Card className="col-span-1">
                 <div className="p-6">
@@ -83,6 +217,7 @@ export default function DashboardPage() {
               </Card>
             </div>
           </TabsContent>
+
           <TabsContent value="analytics">
             <Card>
               <div className="p-6">
