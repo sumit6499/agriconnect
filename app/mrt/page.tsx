@@ -17,13 +17,13 @@ export default function Home() {
           अ‍ॅग्रीकनेक्ट शेतकऱ्यांना थेट बाजारपेठ उपलब्ध करून देते आणि त्याचबरोबर ग्राहकांना ताजे, स्थानिक पातळीवर मिळणारे उत्पादन वाजवी किमतीत उपलब्ध करून देते.
           </p>
           <div className="flex gap-4">
-            <Link href="/marketplace">
+            <Link href="/mrt/marketplace">
               <Button size="lg">
               मार्केटप्लेस ब्राउझ करा
                 <ShoppingBasket className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/signup">
+            <Link href="/mrt/signup">
               <Button variant="outline" size="lg">
               शेतकरी म्हणून सामील व्हा
                 <Leaf className="ml-2 h-5 w-5" />
