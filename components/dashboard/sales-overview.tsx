@@ -17,7 +17,11 @@ export function SalesOverview() {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip />
+          <Tooltip 
+            contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', color: '#fff', borderRadius: '5px' }}
+            labelStyle={{ fontWeight: 'bold' }}
+            itemStyle={{ color: '#fff' }}
+          />
           <Bar dataKey="sales" fill="hsl(var(--primary))" />
         </BarChart>
       </ResponsiveContainer>
